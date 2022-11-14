@@ -36,7 +36,7 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 		for aktuellerAuftrag.Restdauer > 0 {
 			zeitBisFeierabend := durationTillClosingTime(currentTime)
 			if float64(aktuellerAuftrag.Restdauer) <= zeitBisFeierabend.Minutes() {
-				currentTime = addMinutesToTime(currentTime, aktuellerAuftrag.Bearbeitungsdauer)
+				currentTime = addMinutesToTime(currentTime, aktuellerAuftrag.Restdauer)
 				aktuellerAuftrag.Restdauer = 0
 				break
 			}
