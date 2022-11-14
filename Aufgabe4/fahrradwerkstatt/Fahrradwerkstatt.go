@@ -8,7 +8,13 @@ import (
 )
 
 func Fahrradwerkstatt(auftraege []*Auftrag) {
-	fmt.Println(AeltesterAuftragZuerst(auftraege))
+	var auftraege2 []*Auftrag
+	for _, auftrag := range auftraege {
+		auftrag2 := *auftrag
+		auftraege2 = append(auftraege2, &auftrag2)
+	}
+	fmt.Println(KuerzesterAuftragZuerst(auftraege))
+	fmt.Println(AeltesterAuftragZuerst(auftraege2))
 }
 
 // AeltesterAuftragZuerst erledigt sämtliche Aufträge in der Reihenfolge in der sie eingetroffen sind.
@@ -28,13 +34,13 @@ func AeltesterAuftragZuerst(auftraege []*Auftrag) (float64, int) {
 		aktuellerAuftrag := aktuelleAuftraege[0]
 		for aktuellerAuftrag.Restdauer > 0 {
 			zeitBisFeierabend := durationTillClosingTime(currentTime)
-			if float64(aktuellerAuftrag.Restdauer) < zeitBisFeierabend.Minutes() {
+			if float64(aktuellerAuftrag.Restdauer) <= zeitBisFeierabend.Minutes() {
 				currentTime = currentTime.Add(time.Minute * time.Duration(aktuellerAuftrag.Bearbeitungsdauer))
 				aktuellerAuftrag.Restdauer = 0
 				break
 			}
 			aktuellerAuftrag.Restdauer -= int(zeitBisFeierabend.Minutes())
-			currentTime = currentTime.Add(time.Hour * 16)
+			currentTime = currentTime.Add(time.Hour * 16).Add(zeitBisFeierabend)
 		}
 
 		aktuellerAuftrag.Fertigstellungszeitpunkt = int(timeSinceBegin(currentTime).Minutes())
@@ -50,8 +56,47 @@ func AeltesterAuftragZuerst(auftraege []*Auftrag) (float64, int) {
 
 // KuerzesterAuftragZuerst erledigt sämtliche Aufträge in der Reihenfolge von kurz nach lang.
 // Gibt die durchschnittliche und die maximale Wartezeit zurück.
-func KuerzesterAuftragZuerst(auftraege []Auftrag) (int, int) {
-	return 0, 0
+func KuerzesterAuftragZuerst(auftraege []*Auftrag) (float64, int) {
+	var currentTime time.Time // aktueller Zeitpunkt in Minuten
+	currentTime = currentTime.Add(time.Hour * 9)
+	auftraege = sortArrayByEingangszeitpunkt(auftraege)
+	var done []*Auftrag
+	for len(auftraege) > 0 {
+		aktuelleAuftraege := filterCurrentAvailable(auftraege, int(timeSinceBegin(currentTime).Minutes()))
+		if len(aktuelleAuftraege) == 0 {
+			currentTime = time.Time{}.Add(time.Minute * time.Duration(auftraege[0].Eingangszeitpunkt))
+			continue
+		}
+		aktuelleAuftraege = sortArrayByShortest(aktuelleAuftraege)
+
+		aktuellerAuftrag := aktuelleAuftraege[0]
+		for aktuellerAuftrag.Restdauer > 0 {
+			zeitBisFeierabend := durationTillClosingTime(currentTime)
+			if float64(aktuellerAuftrag.Restdauer) <= zeitBisFeierabend.Minutes() {
+				currentTime = currentTime.Add(time.Minute * time.Duration(aktuellerAuftrag.Bearbeitungsdauer))
+				aktuellerAuftrag.Restdauer = 0
+				break
+			}
+			aktuellerAuftrag.Restdauer -= int(zeitBisFeierabend.Minutes())
+			currentTime = currentTime.Add(time.Hour * 16).Add(zeitBisFeierabend)
+		}
+
+		aktuellerAuftrag.Fertigstellungszeitpunkt = int(timeSinceBegin(currentTime).Minutes())
+
+		i := utils.IndexOf(auftraege, aktuellerAuftrag)
+
+		auftraege = utils.Remove(auftraege, i)
+		done = append(done, aktuellerAuftrag)
+	}
+
+	return durchschnittsDauer(done), maxDauer(done)
+}
+
+func sortArrayByShortest(array []*Auftrag) []*Auftrag {
+	sort.Slice(array, func(i, j int) bool {
+		return array[i].Bearbeitungsdauer < array[j].Bearbeitungsdauer
+	})
+	return array
 }
 
 func durationTillClosingTime(currentTime time.Time) time.Duration {
