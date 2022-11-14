@@ -17,27 +17,27 @@ func TestRemove(t *testing.T) {
 	}
 	tests := []testCase[string]{
 		{
-			name: "testings basic remove",
+			name: "testing basic remove",
 			args: args[string]{a: []string{"this", "is", "a", "remove-this", "test"}, i: 3},
 			want: []string{"this", "is", "a", "test"},
 		},
 		{
-			name: "testings remove of first index",
+			name: "testing remove of first index",
 			args: args[string]{a: []string{"remove-this", "this", "is", "a", "test"}, i: 0},
 			want: []string{"this", "is", "a", "test"},
 		},
 		{
-			name: "testings remove of last index",
+			name: "testing remove of last index",
 			args: args[string]{a: []string{"this", "is", "a", "test", "remove-this"}, i: 4},
 			want: []string{"this", "is", "a", "test"},
 		},
 		{
-			name: "testings remove of not existing index",
+			name: "testing remove of not existing index",
 			args: args[string]{a: []string{"this", "is", "a", "test"}, i: 8},
 			want: []string{"this", "is", "a", "test"},
 		},
 		{
-			name: "testings remove on empty slice",
+			name: "testing remove on empty slice",
 			args: args[string]{a: []string{}, i: 0},
 			want: []string{},
 		},
