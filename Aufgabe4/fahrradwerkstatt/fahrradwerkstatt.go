@@ -22,8 +22,7 @@ func Fahrradwerkstatt(auftraege []*Auftrag) {
 // Simulation erledigt sämtliche Aufträge und wählt den nächsten Auftrag mit der nextOrder function aus
 // Gibt die durchschnittliche und die maximale Wartezeit zurück.
 func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auftrag) (float64, int) {
-	var currentTime time.Time // aktueller Zeitpunkt in Minuten
-	currentTime = currentTime.Add(time.Hour * 9)
+	currentTime := time.Time{}.Add(time.Hour * 9)
 	auftraege = sortArrayByEingangszeitpunkt(auftraege)
 	var done []*Auftrag
 	for len(auftraege) > 0 {
@@ -49,8 +48,7 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 
 		i := utils.IndexOf(auftraege, aktuellerAuftrag)
 
-		auftraege = utils.Remove(auftraege, i)
-		done = append(done, aktuellerAuftrag)
+		auftraege, done = utils.RemoveAndAppend(auftraege, done, i)
 	}
 
 	return durchschnittsDauer(done), maxDauer(done)
