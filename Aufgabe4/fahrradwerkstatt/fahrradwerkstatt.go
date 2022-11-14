@@ -26,7 +26,7 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 	auftraege = sortArrayByEingangszeitpunkt(auftraege)
 	var done []*Auftrag
 	for len(auftraege) > 0 {
-		aktuelleAuftraege := filterCurrentAvailable(auftraege, int(timeSinceBegin(currentTime).Minutes()))
+		aktuelleAuftraege := filterCurrentAvailable(auftraege, currentTime)
 		if len(aktuelleAuftraege) == 0 {
 			currentTime = time.Time{}.Add(time.Minute * time.Duration(auftraege[0].Eingangszeitpunkt))
 			continue
@@ -76,10 +76,12 @@ func durationTillClosingTime(currentTime time.Time) time.Duration {
 	return feierabend.Sub(currentTime)
 }
 
-func filterCurrentAvailable(auftraege []*Auftrag, currentTime int) []*Auftrag {
+func filterCurrentAvailable(auftraege []*Auftrag, currentTime time.Time) []*Auftrag {
+	currentTimeInMinutes := int(timeSinceBegin(currentTime).Minutes())
+
 	var aktuelleAuftraege []*Auftrag
 	for _, auftrag := range auftraege {
-		if auftrag.Eingangszeitpunkt <= currentTime {
+		if auftrag.Eingangszeitpunkt <= currentTimeInMinutes {
 			aktuelleAuftraege = append(aktuelleAuftraege, auftrag)
 		}
 	}
