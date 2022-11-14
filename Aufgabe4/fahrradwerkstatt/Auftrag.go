@@ -36,6 +36,7 @@ func AuftraegeAusDateiLesen(filename string) []*Auftrag {
 		auftraege = append(auftraege, &Auftrag{
 			Eingangszeitpunkt: eingangszeitpunkt,
 			Bearbeitungsdauer: bearbeitungsdauer,
+			Restdauer:         bearbeitungsdauer,
 		})
 	}
 

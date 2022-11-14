@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Aufgabe4/fahrradwerkstatt"
 	"flag"
 	"os"
 )
@@ -21,4 +22,8 @@ func main() {
 		flag.PrintDefaults()
 		return
 	}
+
+	auftraege := fahrradwerkstatt.AuftraegeAusDateiLesen(filename)
+
+	fahrradwerkstatt.Fahrradwerkstatt(auftraege)
 }
