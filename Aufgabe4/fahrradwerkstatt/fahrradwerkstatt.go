@@ -28,7 +28,7 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 	for len(auftraege) > 0 {
 		aktuelleAuftraege := filterCurrentAvailable(auftraege, currentTime)
 		if len(aktuelleAuftraege) == 0 {
-			currentTime = time.Time{}.Add(time.Minute * time.Duration(auftraege[0].Eingangszeitpunkt))
+			currentTime = timeFromMinutes(auftraege[0].Eingangszeitpunkt)
 			continue
 		}
 
@@ -36,7 +36,7 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 		for aktuellerAuftrag.Restdauer > 0 {
 			zeitBisFeierabend := durationTillClosingTime(currentTime)
 			if float64(aktuellerAuftrag.Restdauer) <= zeitBisFeierabend.Minutes() {
-				currentTime = currentTime.Add(time.Minute * time.Duration(aktuellerAuftrag.Bearbeitungsdauer))
+				currentTime = addMinutesToTime(currentTime, aktuellerAuftrag.Bearbeitungsdauer)
 				aktuellerAuftrag.Restdauer = 0
 				break
 			}
@@ -52,6 +52,14 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 	}
 
 	return durchschnittsDauer(done), maxDauer(done)
+}
+
+func timeFromMinutes(minutes int) time.Time {
+	return time.Time{}.Add(time.Minute * time.Duration(minutes))
+}
+
+func addMinutesToTime(t time.Time, minutes int) time.Time {
+	return t.Add(time.Minute * time.Duration(minutes))
 }
 
 func shortestAuftrag(auftraege []*Auftrag) *Auftrag {
