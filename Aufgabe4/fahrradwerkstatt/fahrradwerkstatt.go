@@ -8,15 +8,10 @@ import (
 )
 
 func Fahrradwerkstatt(auftraege []*Auftrag) {
-	var auftraege2 []*Auftrag
-	for _, auftrag := range auftraege {
-		auftrag2 := *auftrag
-		auftraege2 = append(auftraege2, &auftrag2)
-	}
 	fmt.Println("Shortest:")
-	fmt.Println(Simulation(auftraege, shortestAuftrag))
+	fmt.Println(Simulation(utils.CopyPointerSlice(auftraege), shortestAuftrag))
 	fmt.Println("Ältester:")
-	fmt.Println(Simulation(auftraege2, aeltesterAuftrag))
+	fmt.Println(Simulation(utils.CopyPointerSlice(auftraege), aeltesterAuftrag))
 }
 
 // Simulation erledigt sämtliche Aufträge und wählt den nächsten Auftrag mit der nextOrder function aus
