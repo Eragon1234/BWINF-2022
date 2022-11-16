@@ -42,30 +42,30 @@ class Test(TestCase):
         self.assertCountEqual({
             "o": {
                 "rption": [
-                    "absorption"
+                    "Absorption"
                 ],
                 "te": [
-                    "note",
-                    "brote"
+                    "Note",
+                    "Brote"
                 ]
             },
             "u": {
                 "nktion": {
-                    "xor-funktion"
+                    "XOR-Funktion"
                 },
                 "mption": {
-                    "konsumption"
+                    "Konsumption"
                 }
             },
             "i": {
                 "ldnis": [
-                    "bildnis",
-                    "wildnis"
+                    "Bildnis",
+                    "Wildnis"
                 ],
             },
             "ae": {
                 "ndnis": [
-                    "gestaendnis",
+                    "Gestaendnis",
                 ]
             },
         }, rhymes)
@@ -77,19 +77,19 @@ class Test(TestCase):
         self.assertCountEqual({
             "i": {
                 "lon": [
-                    "epsilon",
-                    "ypsilon"
+                    "Epsilon",
+                    "Ypsilon"
 
                 ]
             },
             "o": {
                 "to": [
-                    "foto"
+                    "Foto"
                 ]
             },
             "e": {
                 "mpel": [
-                    "tempel"
+                    "Tempel"
                 ]
             }
         }, rhymes)
@@ -117,7 +117,7 @@ class TestCharsAfterVocal(TestCase):
         ]
 
         for test in tests:
-            self.assertEqual(chars_after_vocal(**test["args"]), test["want"], test["name"])
+            self.assertEqual(test["want"], chars_after_vocal(**test["args"]), test["name"])
 
 
 class TestMassgebendeVokalgruppe(TestCase):
@@ -140,4 +140,4 @@ class TestMassgebendeVokalgruppe(TestCase):
         ]
 
         for test in tests:
-            self.assertEqual(massgebende_vokalgruppe(**test["args"]), test["want"], test["name"])
+            self.assertEqual(test["want"], massgebende_vokalgruppe(**test["args"]), test["name"])
