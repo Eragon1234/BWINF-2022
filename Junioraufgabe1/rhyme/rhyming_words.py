@@ -39,8 +39,15 @@ def chars_after_vocal(word: str, mass_vokal: str) -> str:
         return word.split(mass_vokal)[-1]
     i_last = word.rindex(mass_vokal)
     i_sec_last = word.rindex(mass_vokal, None, i_last)
-    return word[i_sec_last+1:]
+    return word[i_sec_last + 1:]
 
 
 def prepare_words(words: list[str]) -> list[str]:
     return [word.replace("ö", "oe").replace("ä", "ae").replace("ü", "ue") for word in words]
+
+
+def sort_rhymes(rhymes: dict[str, dict[str, list]]) -> dict[str, dict[str, list]]:
+    for mass_vokal_group in rhymes:
+        for chars_after_vocal_group in rhymes[mass_vokal_group]:
+            rhymes[mass_vokal_group][chars_after_vocal_group].sort()
+    return rhymes

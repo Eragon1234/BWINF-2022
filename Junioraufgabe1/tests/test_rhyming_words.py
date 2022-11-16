@@ -1,14 +1,14 @@
 from unittest import TestCase
-from Junioraufgabe1.rhyme.rhyming_words import rhyming_words, chars_after_vocal, massgebende_vokalgruppe
+from Junioraufgabe1.rhyme.rhyming_words import rhyming_words, chars_after_vocal, massgebende_vokalgruppe, sort_rhymes
 from Junioraufgabe1.rhyme.read_words_from_file import read_words_from_file
 
 
-class Test(TestCase):
+class TestRhymingWords(TestCase):
     def test_rhyming_words_reimerei0(self):
         words = read_words_from_file("../Beispieleingaben/reimerei0.txt")
         rhymes = rhyming_words(words)
 
-        self.assertCountEqual({
+        self.assertEquals(sort_rhymes({
             "ie": {
                 "ne": [
                     "Biene",
@@ -33,13 +33,13 @@ class Test(TestCase):
                     "Recht"
                 ]
             }
-        }, rhymes)
+        }), sort_rhymes(rhymes))
 
     def test_rhyming_words_reimerei1(self):
         words = read_words_from_file("../Beispieleingaben/reimerei1.txt")
         rhymes = rhyming_words(words)
 
-        self.assertCountEqual({
+        self.assertEquals(sort_rhymes({
             "o": {
                 "rption": [
                     "Absorption"
@@ -50,12 +50,12 @@ class Test(TestCase):
                 ]
             },
             "u": {
-                "nktion": {
+                "nktion": [
                     "XOR-Funktion"
-                },
-                "mption": {
+                ],
+                "mption": [
                     "Konsumption"
-                }
+                ]
             },
             "i": {
                 "ldnis": [
@@ -68,13 +68,13 @@ class Test(TestCase):
                     "Gestaendnis",
                 ]
             },
-        }, rhymes)
+        }), sort_rhymes(rhymes))
 
     def test_rhyming_words_reimerei2(self):
         words = read_words_from_file("../Beispieleingaben/reimerei2.txt")
         rhymes = rhyming_words(words)
 
-        self.assertCountEqual({
+        self.assertEquals(sort_rhymes({
             "i": {
                 "lon": [
                     "Epsilon",
@@ -92,7 +92,7 @@ class Test(TestCase):
                     "Tempel"
                 ]
             }
-        }, rhymes)
+        }), sort_rhymes(rhymes))
 
 
 class TestCharsAfterVocal(TestCase):
@@ -117,7 +117,7 @@ class TestCharsAfterVocal(TestCase):
         ]
 
         for test in tests:
-            self.assertEqual(test["want"], chars_after_vocal(**test["args"]), test["name"])
+            self.assertEquals(test["want"], chars_after_vocal(**test["args"]), test["name"])
 
 
 class TestMassgebendeVokalgruppe(TestCase):
@@ -140,4 +140,4 @@ class TestMassgebendeVokalgruppe(TestCase):
         ]
 
         for test in tests:
-            self.assertEqual(test["want"], massgebende_vokalgruppe(**test["args"]), test["name"])
+            self.assertEquals(test["want"], massgebende_vokalgruppe(**test["args"]), test["name"])
