@@ -1,0 +1,34 @@
+package main
+
+import (
+	"Aufgabe1/search"
+	"flag"
+	"log"
+	"os"
+)
+
+var filename string
+
+func init() {
+	flag.StringVar(&filename, "f", "", "Name der Datei mit dem Lückensatz")
+	flag.StringVar(&filename, "file", "", "Name der Datei mit dem Lückensatz")
+	flag.StringVar(&filename, "filename", "", "Name der Datei mit dem Lückensatz")
+	flag.Parse()
+}
+
+func main() {
+	if filename == "" && len(os.Args) > 1 {
+		filename = os.Args[1]
+	} else {
+		flag.PrintDefaults()
+		return
+	}
+
+	txt, err := os.ReadFile("Alice_im_Wunderland.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	sentences := search.SearchSentencesWithSearchFile(string(txt), filename)
+	println(sentences)
+}
