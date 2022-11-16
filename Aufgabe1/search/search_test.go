@@ -37,6 +37,37 @@ func TestSearchSentencesWithSearchFile(t *testing.T) {
 				"Ich muß doch Clara sein",
 			},
 		},
+		{
+			name: "test stoerung2.txt",
+			args: args{txt: string(txt), filename: "../Beispielaufgaben/stoerung2.txt"},
+			want: []string{
+				"Fressen Katzen gern Spatzen",
+				"Fressen Katzen gern Spatzen",
+				"Fressen Spatzen gern Katzen",
+			},
+		},
+		{
+			name: "test stoerung3.txt",
+			args: args{txt: string(txt), filename: "../Beispielaufgaben/stoerung3.txt"},
+			want: []string{
+				"das Spiel fing an",
+				"Das Publikum fing an",
+			},
+		},
+		{
+			name: "test stoerung4.txt",
+			args: args{txt: string(txt), filename: "../Beispielaufgaben/stoerung4.txt"},
+			want: []string{
+				"ein sehr schöner Tag",
+			},
+		},
+		{
+			name: "test stoerung5.txt",
+			args: args{txt: string(txt), filename: "../Beispielaufgaben/stoerung5.txt"},
+			want: []string{
+				"Wollen Sie so gut sein",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
