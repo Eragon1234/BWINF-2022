@@ -1,5 +1,6 @@
 from unittest import TestCase
-from ..main import rhyming_words, read_words_from_file
+from Junioraufgabe1.rhyme.rhyming_words import rhyming_words, chars_after_vocal, massgebende_vokalgruppe
+from Junioraufgabe1.rhyme.read_words_from_file import read_words_from_file
 
 
 class Test(TestCase):
@@ -7,12 +8,12 @@ class Test(TestCase):
         words = read_words_from_file("../Beispieleingaben/reimerei0.txt")
         rhymes = rhyming_words(words)
 
-        self.assertEqual(rhymes, {
+        self.assertCountEqual({
             "ie": {
                 "ne": [
-                    "biene",
-                    "schiene",
-                    "hygiene"
+                    "Biene",
+                    "Schiene",
+                    "Hygiene"
                 ]
             },
             "ue": {
@@ -22,27 +23,23 @@ class Test(TestCase):
                 ]
             },
             "a": {
-                "nk": [
-                    "schlank",
-                    "schwank"
-                ],
                 "gen": [
                     "hersagen"
                 ]
             },
             "e": {
                 "cht": [
-                    "knecht",
-                    "recht"
+                    "Knecht",
+                    "Recht"
                 ]
             }
-        })
+        }, rhymes)
 
     def test_rhyming_words_reimerei1(self):
         words = read_words_from_file("../Beispieleingaben/reimerei1.txt")
         rhymes = rhyming_words(words)
 
-        self.assertEqual(rhymes, {
+        self.assertCountEqual({
             "o": {
                 "rption": [
                     "absorption"
@@ -71,13 +68,13 @@ class Test(TestCase):
                     "gestaendnis",
                 ]
             },
-        })
+        }, rhymes)
 
     def test_rhyming_words_reimerei2(self):
         words = read_words_from_file("../Beispieleingaben/reimerei2.txt")
         rhymes = rhyming_words(words)
 
-        self.assertEqual(rhymes, {
+        self.assertCountEqual({
             "i": {
                 "lon": [
                     "epsilon",
@@ -95,4 +92,52 @@ class Test(TestCase):
                     "tempel"
                 ]
             }
-        })
+        }, rhymes)
+
+
+class TestCharsAfterVocal(TestCase):
+    def test_chars_after_vocal(self):
+        tests = [
+            {
+                "name": "testing basic",
+                "args": {
+                    "word": "Biene",
+                    "mass_vokal": "ie"
+                },
+                "want": "ne"
+            },
+            {
+                "name": "testing word with the mass_vokal two times",
+                "args": {
+                    "word": "Foto",
+                    "mass_vokal": "o"
+                },
+                "want": "to"
+            }
+        ]
+
+        for test in tests:
+            self.assertEqual(chars_after_vocal(**test["args"]), test["want"], test["name"])
+
+
+class TestMassgebendeVokalgruppe(TestCase):
+    def test_massgebende_vokalgruppe(self):
+        tests = [
+            {
+                "name": "testing basic",
+                "args": {
+                    "word": "Biene"
+                },
+                "want": "ie"
+            },
+            {
+                "name": "testing word with only one vocal group",
+                "args": {
+                    "word": "Knecht",
+                },
+                "want": "e"
+            }
+        ]
+
+        for test in tests:
+            self.assertEqual(massgebende_vokalgruppe(**test["args"]), test["want"], test["name"])
