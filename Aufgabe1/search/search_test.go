@@ -26,7 +26,7 @@ func TestSearchSentencesWithSearchFile(t *testing.T) {
 			name: "test stoerung0.txt",
 			args: args{txt: string(txt), filename: "../Beispielaufgaben/stoerung0.txt"},
 			want: []string{
-				"das kommt mir gar nicht richtig vor",
+				"Das kommt mir gar nicht richtig vor",
 			},
 		},
 		{
