@@ -25,6 +25,8 @@ def rhyming_words(words: list[str]) -> dict[str, dict[str, list]]:
 
 def massgebende_vokalgruppe(word: str):
     vokalgruppen = re.findall("[aeiou]+", word)
+    if len(vokalgruppen) == 1:
+        return vokalgruppen[0]
     return vokalgruppen[-2]
 
 
