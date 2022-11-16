@@ -6,6 +6,8 @@ def rhyming_words(words: list[str]) -> dict[str, dict[str, list]]:
     rhymes = {}
     for word in words:
         mass_vokal = massgebende_vokalgruppe(word)
+        if mass_vokal == "":
+            continue
 
         chars_after_vokal = chars_after_vocal(word, mass_vokal)
 
@@ -25,6 +27,8 @@ def rhyming_words(words: list[str]) -> dict[str, dict[str, list]]:
 
 def massgebende_vokalgruppe(word: str):
     vokalgruppen = re.findall("[aeiou]+", word)
+    if len(vokalgruppen) == 0:
+        return ""
     if len(vokalgruppen) == 1:
         return vokalgruppen[0]
     return vokalgruppen[-2]
