@@ -1,6 +1,7 @@
 from unittest import TestCase
-from Junioraufgabe1.rhyme.rhyming_words import rhyming_words, chars_after_vocal, massgebende_vokalgruppe, sort_rhymes
+
 from Junioraufgabe1.rhyme.read_words_from_file import read_words_from_file
+from Junioraufgabe1.rhyme.rhyming_words import rhyming_words, chars_after_vocal, massgebende_vokalgruppe, sort_rhymes
 
 
 class TestRhymingWords(TestCase):
