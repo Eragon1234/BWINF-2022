@@ -35,7 +35,7 @@ def filter_rhymes(rhymes: dict[str, dict[str, list]]) -> dict[str, dict[str, lis
             for word in copy(words):
                 current_words = list(filter(lambda w: w != word, words))
                 for current_word in current_words:
-                    if word.endswith(current_word.lower()):
+                    if word.lower().endswith(current_word.lower()):
                         words.remove(word)
     return rhymes
 
