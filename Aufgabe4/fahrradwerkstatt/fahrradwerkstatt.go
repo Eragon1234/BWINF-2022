@@ -8,15 +8,18 @@ import (
 )
 
 func Fahrradwerkstatt(auftraege []*Auftrag) {
-	fmt.Println("Shortest:")
-	fmt.Println(Simulation(utils.CopyPointerSlice(auftraege), shortestAuftrag))
-	fmt.Println("Ältester:")
-	fmt.Println(Simulation(utils.CopyPointerSlice(auftraege), aeltesterAuftrag))
+	shortestResults := Simulation(utils.CopyPointerSlice(auftraege), shortestAuftrag)
+	aeltestResults := Simulation(utils.CopyPointerSlice(auftraege), aeltesterAuftrag)
+	highestRatioResults := Simulation(utils.CopyPointerSlice(auftraege), highestRatioAuftrag)
+
+	printResult(shortestResults, "Kürzeste Aufträge zuerst")
+	printResult(aeltestResults, "Älteste Aufträge zuerst")
+	printResult(highestRatioResults, "Höchstes Wartezeit zu Auftragsdauer Verhältnis zuerst")
 }
 
 // Simulation erledigt sämtliche Aufträge und wählt den nächsten Auftrag mit der nextOrder function aus
 // Gibt die durchschnittliche und die maximale Wartezeit zurück.
-func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auftrag) (float64, int) {
+func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag, currentTime int) *Auftrag) []*Auftrag {
 	currentTime := time.Time{}.Add(time.Hour * 9)
 	auftraege = sortArrayByEingangszeitpunkt(auftraege)
 	var done []*Auftrag
@@ -27,7 +30,7 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 			continue
 		}
 
-		aktuellerAuftrag := nextOrder(aktuelleAuftraege)
+		aktuellerAuftrag := nextOrder(aktuelleAuftraege, int(timeSinceBegin(currentTime).Minutes()))
 		for aktuellerAuftrag.Restdauer > 0 {
 			zeitBisFeierabend := durationTillClosingTime(currentTime)
 			if float64(aktuellerAuftrag.Restdauer) <= zeitBisFeierabend.Minutes() {
@@ -46,7 +49,15 @@ func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag) *Auft
 		auftraege, done = utils.RemoveAndAppend(auftraege, done, i)
 	}
 
-	return durchschnittsDauer(done), maxDauer(done)
+	return done
+}
+
+func printResult(results []*Auftrag, name string) {
+	fmt.Println(name)
+	fmt.Printf("Durchschnittliche Wartezeit: %.2f\n", durchschnittsDauer(results))
+	fmt.Printf("Maximale Wartezeit: %d\n", maxDauer(results))
+	fmt.Printf("Durchschnittliches Wartezeit zu Auftragsdauer Verhältnis: %.2f\n", averageWaitToDurationRatio(results))
+	fmt.Println()
 }
 
 func timeFromMinutes(minutes int) time.Time {
@@ -57,14 +68,30 @@ func addMinutesToTime(t time.Time, minutes int) time.Time {
 	return t.Add(time.Minute * time.Duration(minutes))
 }
 
-func shortestAuftrag(auftraege []*Auftrag) *Auftrag {
+func shortestAuftrag(auftraege []*Auftrag, _ int) *Auftrag {
 	auftraege = sortArrayByShortest(auftraege)
 	return auftraege[0]
 }
 
-func aeltesterAuftrag(auftraege []*Auftrag) *Auftrag {
+func aeltesterAuftrag(auftraege []*Auftrag, _ int) *Auftrag {
 	auftraege = sortArrayByEingangszeitpunkt(auftraege)
 	return auftraege[0]
+}
+
+func highestRatioAuftrag(auftraege []*Auftrag, currentTime int) *Auftrag {
+	var highestRatioAuftrag *Auftrag
+	var highestRatio float64 = -1
+	for _, auftrag := range auftraege {
+		aktuelleWartezeit := float64(currentTime - auftrag.Eingangszeitpunkt)
+		currentRatio := aktuelleWartezeit / float64(auftrag.Bearbeitungsdauer)
+
+		if currentRatio > highestRatio {
+			highestRatioAuftrag = auftrag
+			highestRatio = currentRatio
+		}
+	}
+
+	return highestRatioAuftrag
 }
 
 func sortArrayByShortest(array []*Auftrag) []*Auftrag {
@@ -115,6 +142,16 @@ func maxDauer(auftraege []*Auftrag) int {
 		}
 	}
 	return longest
+}
+
+func averageWaitToDurationRatio(auftraege []*Auftrag) float64 {
+	var dauerSumme float64
+	var durationSumme float64
+	for _, auftrag := range auftraege {
+		dauerSumme += float64(auftrag.Fertigstellungszeitpunkt) - float64(auftrag.Eingangszeitpunkt)
+		durationSumme += float64(auftrag.Bearbeitungsdauer)
+	}
+	return dauerSumme / durationSumme
 }
 
 func timeSinceBegin(currentTime time.Time) time.Duration {
