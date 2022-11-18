@@ -1,7 +1,8 @@
 from unittest import TestCase
 
 from Junioraufgabe1.rhyme.read_words_from_file import read_words_from_file
-from Junioraufgabe1.rhyme.rhyming_words import rhyming_words, chars_after_vocal, massgebende_vokalgruppe, sort_rhymes
+from Junioraufgabe1.rhyme.rhyming_words import rhyming_words, chars_after_vocal, massgebende_vokalgruppe, sort_rhymes, \
+    filter_rhymes
 
 
 class TestRhymingWords(TestCase):
@@ -142,3 +143,38 @@ class TestMassgebendeVokalgruppe(TestCase):
 
         for test in tests:
             self.assertEquals(test["want"], massgebende_vokalgruppe(**test["args"]), test["name"])
+
+
+class TestFilterRhymes(TestCase):
+    def test_filter_rhymes(self):
+        test_words = {
+            "x": {
+                "x": [
+                    "Autobahn",
+                    "Bahn"
+
+                ]
+            },
+            "y": {
+                "x": [
+                    "Parkhaus",
+                    "Kaufhaus",
+                    "Haus"
+                ]
+            }
+        }
+
+        result = filter_rhymes(test_words)
+
+        self.assertEquals({
+            "x": {
+                "x": [
+                    "Bahn"
+                ]
+            },
+            "y": {
+                "x": [
+                    "Haus"
+                ]
+            }
+        }, result)

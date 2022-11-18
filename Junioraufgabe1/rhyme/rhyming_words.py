@@ -1,4 +1,5 @@
 import re
+from copy import copy
 
 
 def rhyming_words(words: list[str]) -> dict[str, dict[str, list]]:
@@ -22,6 +23,20 @@ def rhyming_words(words: list[str]) -> dict[str, dict[str, list]]:
 
         rhymes[mass_vokal][chars_after_vokal].append(word)
 
+    rhymes = filter_rhymes(rhymes)
+    return rhymes
+
+
+def filter_rhymes(rhymes: dict[str, dict[str, list]]) -> dict[str, dict[str, list]]:
+    for mass_vokal_group in rhymes:
+        for chars_after_vocal_group in rhymes[mass_vokal_group]:
+            words = rhymes[mass_vokal_group][chars_after_vocal_group]
+
+            for word in copy(words):
+                current_words = list(filter(lambda w: w != word, words))
+                for current_word in current_words:
+                    if word.endswith(current_word.lower()):
+                        words.remove(word)
     return rhymes
 
 

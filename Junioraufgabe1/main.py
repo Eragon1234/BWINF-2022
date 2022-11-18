@@ -1,10 +1,17 @@
-from Junioraufgabe1.rhyme.read_words_from_file import read_words_from_file
-from Junioraufgabe1.rhyme.rhyming_words import rhyming_words
+import sys
+
+from rhyme.print_rhymes import print_rhymes
+from rhyme.read_words_from_file import read_words_from_file
+from rhyme.rhyming_words import rhyming_words
 
 
 def main():
-    words = read_words_from_file("Beispieleingaben/reimerei3.txt")
-    print(rhyming_words(words))
+    filename = sys.argv[1]
+    if not filename:
+        sys.exit("missing filename")
+    words = read_words_from_file(filename)
+    rhyme_words = rhyming_words(words)
+    print_rhymes(rhyme_words)
 
 
 if __name__ == '__main__':
