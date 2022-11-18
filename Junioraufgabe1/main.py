@@ -9,9 +9,9 @@ from rhyme.rhyming_words import rhyming_words
 
 
 def main():
-    filename = sys.argv[1]
-    if not filename:
+    if len(sys.argv) < 2:
         sys.exit("missing filename")
+    filename = sys.argv[1]
     words = read_words_from_file(filename)
     rhyme_words = rhyming_words(words)
     print_rhymes(rhyme_words)
