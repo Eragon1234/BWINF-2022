@@ -3,6 +3,7 @@ package main
 import (
 	"Aufgabe1/search"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 )
@@ -30,5 +31,11 @@ func main() {
 	}
 
 	sentences := search.SearchSentencesWithSearchFile(string(txt), filename)
-	println(sentences)
+	printSentences(sentences)
+}
+
+func printSentences(sentences []string) {
+	for _, sentence := range sentences {
+		fmt.Println(sentence)
+	}
 }
