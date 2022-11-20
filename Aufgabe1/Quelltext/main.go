@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Aufgabe1/search"
+	"Aufgabe1/Quelltext/search"
 	"flag"
 	"fmt"
 	"log"
