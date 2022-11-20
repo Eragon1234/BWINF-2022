@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Aufgabe4/Quelltext/fahrradwerkstatt"
+	"Aufgabe4/fahrradwerkstatt"
 	"flag"
 	"os"
 )

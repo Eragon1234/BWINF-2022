@@ -1,7 +1,7 @@
 package fahrradwerkstatt
 
 import (
-	"Aufgabe4/Quelltext/utils"
+	"Aufgabe4/utils"
 	"fmt"
 	"sort"
 	"time"
