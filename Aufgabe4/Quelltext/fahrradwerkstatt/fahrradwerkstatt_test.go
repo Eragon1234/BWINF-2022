@@ -8,7 +8,7 @@ import (
 func TestSimulation(t *testing.T) {
 	type args struct {
 		auftraege []*Auftrag
-		nextOrder func(auftraege []*Auftrag) *Auftrag
+		nextOrder func(auftraege []*Auftrag, _ int) *Auftrag
 	}
 	tests := []struct {
 		name  string
@@ -102,7 +102,9 @@ func TestSimulation(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := Simulation(tt.args.auftraege, tt.args.nextOrder)
+			done := Simulation(tt.args.auftraege, tt.args.nextOrder)
+			got := durchschnittsDauer(done)
+			got1 := maxDauer(done)
 			if got != tt.want {
 				t.Errorf("Simulation() got = %v, want %v", got, tt.want)
 			}

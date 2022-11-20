@@ -1,7 +1,7 @@
 package fahrradwerkstatt
 
 import (
-	"Aufgabe4/utils"
+	"Aufgabe4/Quelltext/utils"
 	"fmt"
 	"sort"
 	"time"
@@ -18,7 +18,7 @@ func Fahrradwerkstatt(auftraege []*Auftrag) {
 }
 
 // Simulation erledigt sämtliche Aufträge und wählt den nächsten Auftrag mit der nextOrder function aus
-// Gibt die durchschnittliche und die maximale Wartezeit zurück.
+// Gibt die erledigten Aufträge zurück
 func Simulation(auftraege []*Auftrag, nextOrder func(auftraege []*Auftrag, currentTime int) *Auftrag) []*Auftrag {
 	currentTime := time.Time{}.Add(time.Hour * 9)
 	auftraege = sortArrayByEingangszeitpunkt(auftraege)
