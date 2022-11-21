@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// SearchSentencesWithSearchFile loads search from filename and calls SearchSentences
 func SearchSentencesWithSearchFile(txt, filename string) []string {
 	searchBytes, err := os.ReadFile(filename)
 	if err != nil {
@@ -18,6 +19,8 @@ func SearchSentencesWithSearchFile(txt, filename string) []string {
 	return SearchSentences(txt, string(searchBytes))
 }
 
+// SearchSentences searches for a sentence in txt that matches the search string (gaps are underscores).
+// returns all found applicable sentences
 func SearchSentences(txt, search string) []string {
 	txt = removeSpecialCharacters(txt)
 
@@ -72,6 +75,8 @@ func removeSpecialCharacters(txt string) string {
 	return reg.ReplaceAllString(txt, "")
 }
 
+// RegexSearchSentences searches for a sentence in txt that matches the search string (gaps are underscores) by using a regular expression.
+// returns all found applicable sentences
 func RegexSearchSentences(txt, search string) []string {
 	expression := fmt.Sprintf(`(?mi)%s`, strings.ReplaceAll(search, "_", "\\w+"))
 	re := regexp.MustCompile(expression)
