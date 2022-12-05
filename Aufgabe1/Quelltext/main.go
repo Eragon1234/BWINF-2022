@@ -2,11 +2,14 @@ package main
 
 import (
 	"Aufgabe1/search"
+	_ "embed"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 )
+
+//go:embed Alice_im_Wunderland.txt
+var txt string
 
 var filename string
 
@@ -25,12 +28,7 @@ func main() {
 		return
 	}
 
-	txt, err := os.ReadFile("Alice_im_Wunderland.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	sentences := search.SearchSentencesWithSearchFile(string(txt), filename)
+	sentences := search.SearchSentencesWithSearchFile(txt, filename)
 	printSentences(sentences)
 }
 
