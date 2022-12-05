@@ -1,3 +1,4 @@
 .idea
-Aufgaben.pdf
+*.pdf
 __pycache__
+AusfuehrbaresProgramm
