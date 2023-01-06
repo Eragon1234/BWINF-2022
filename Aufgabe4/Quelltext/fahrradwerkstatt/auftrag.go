@@ -2,7 +2,6 @@ package fahrradwerkstatt
 
 import (
 	"bufio"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -15,10 +14,10 @@ type Auftrag struct {
 	Fertigstellungszeitpunkt int // der Fertigstellungszeitpunkt des Auftrags in Minuten
 }
 
-func AuftraegeAusDateiLesen(filename string) []*Auftrag {
+func AuftraegeAusDateiLesen(filename string) ([]*Auftrag, error) {
 	file, err := os.Open(filename)
 	if err != nil {
-		log.Fatal(err)
+		return []*Auftrag{}, err
 	}
 	defer file.Close()
 
@@ -40,5 +39,5 @@ func AuftraegeAusDateiLesen(filename string) []*Auftrag {
 		})
 	}
 
-	return auftraege
+	return auftraege, nil
 }
