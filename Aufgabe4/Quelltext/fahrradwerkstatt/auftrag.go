@@ -39,5 +39,5 @@ func AuftraegeAusDateiLesen(filename string) ([]*Auftrag, error) {
 		})
 	}
 
-	return auftraege, nil
+	return auftraege, file.Sync()
 }
