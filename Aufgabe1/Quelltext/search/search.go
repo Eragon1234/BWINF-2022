@@ -71,7 +71,7 @@ func filterPossibleStartIndexes(possibleStartIndexes, nextIndexes []int, gaps in
 
 func removeSpecialCharacters(txt string) string {
 	txt = strings.ReplaceAll(txt, "\n", " ")
-	reg := regexp.MustCompile("[^\\w äöüß]")
+	reg := regexp.MustCompile(`[^\w äöüß]`)
 	return reg.ReplaceAllString(txt, "")
 }
 
