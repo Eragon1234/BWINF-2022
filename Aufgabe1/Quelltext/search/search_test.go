@@ -1,7 +1,6 @@
 package search
 
 import (
-	"log"
 	"os"
 	"reflect"
 	"testing"
@@ -10,7 +9,7 @@ import (
 func TestSearchSentencesWithSearchFile(t *testing.T) {
 	txt, err := os.ReadFile("../Alice_im_Wunderland.txt")
 	if err != nil {
-		log.Fatal(err)
+		t.FailNow()
 	}
 
 	type args struct {
@@ -71,7 +70,7 @@ func TestSearchSentencesWithSearchFile(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := SearchSentencesWithSearchFile(tt.args.txt, tt.args.filename); !reflect.DeepEqual(got, tt.want) {
+			if got, _ := SearchSentencesWithSearchFile(tt.args.txt, tt.args.filename); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("SearchSentencesWithSearchFile() = %v, want %v", got, tt.want)
 			}
 		})

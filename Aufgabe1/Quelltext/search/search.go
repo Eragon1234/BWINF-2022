@@ -3,20 +3,19 @@ package search
 import (
 	"Aufgabe1/utils"
 	"fmt"
-	"log"
 	"os"
 	"regexp"
 	"strings"
 )
 
 // SearchSentencesWithSearchFile loads search from filename and calls SearchSentences
-func SearchSentencesWithSearchFile(txt, filename string) []string {
+func SearchSentencesWithSearchFile(txt, filename string) ([]string, error) {
 	searchBytes, err := os.ReadFile(filename)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return SearchSentences(txt, string(searchBytes))
+	return SearchSentences(txt, string(searchBytes)), nil
 }
 
 // SearchSentences searches for a sentence in txt that matches the search string (gaps are underscores).
