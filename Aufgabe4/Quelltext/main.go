@@ -23,7 +23,10 @@ func main() {
 		return
 	}
 
-	auftraege := fahrradwerkstatt.AuftraegeAusDateiLesen(filename)
+	auftraege, err := fahrradwerkstatt.AuftraegeAusDateiLesen(filename)
+	if err != nil {
+		panic(err)
+	}
 
 	fahrradwerkstatt.Fahrradwerkstatt(auftraege)
 }

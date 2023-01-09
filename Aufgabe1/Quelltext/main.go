@@ -28,7 +28,10 @@ func main() {
 		return
 	}
 
-	sentences := search.SearchSentencesWithSearchFile(txt, filename)
+	sentences, err := search.SearchSentencesWithSearchFile(txt, filename)
+	if err != nil {
+		panic(err)
+	}
 	printSentences(sentences)
 }
 
